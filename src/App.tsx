@@ -3,6 +3,7 @@ import { renderStack } from "./core/renderer";
 import type { BuilderSelection, ProjectPack, StackPreset } from "./core/types";
 import { ComposeEditor } from "./editor/ComposeEditor";
 import { EditorErrorBoundary } from "./editor/EditorErrorBoundary";
+import { MarkdownOutput } from "./editor/MarkdownOutput";
 import { findProject, projects } from "./projects";
 
 type Tab = "compose" | "env" | "guide" | "qa" | "security" | "config";
@@ -182,9 +183,9 @@ export function App() {
             onReset={() => setEditedCompose(null)}
           />
         )}
-        {tab === "env" && <OutputArea title=".env.example" value={result.envExample} onCopy={() => copy(result.envExample)} />}
-        {tab === "guide" && <OutputArea title="SETUP.md" value={result.guideMarkdown} onCopy={() => copy(result.guideMarkdown)} />}
-        {tab === "qa" && <OutputArea title="QA.md" value={result.qaMarkdown} onCopy={() => copy(result.qaMarkdown)} />}
+        {tab === "env" && <MarkdownOutput title=".env.example" value={result.envExample} asCodeBlock onCopy={copy} />}
+        {tab === "guide" && <MarkdownOutput title="SETUP.md" value={result.guideMarkdown} onCopy={copy} />}
+        {tab === "qa" && <MarkdownOutput title="QA.md" value={result.qaMarkdown} onCopy={copy} />}
         {tab === "security" && <OutputArea title="risk-report.json" value={result.riskReportJson} onCopy={() => copy(result.riskReportJson)} />}
         {tab === "config" && <OutputArea title="stack-builder.config.json" value={result.stackConfigJson} onCopy={() => copy(result.stackConfigJson)} />}
       </section>

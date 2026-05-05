@@ -11,6 +11,13 @@
 
 body {
   margin: 0;
+  overflow: hidden;
+}
+
+html,
+body,
+#root {
+  height: 100%;
 }
 
 button,
@@ -22,14 +29,17 @@ textarea,
 }
 
 .shell {
-  min-height: 100vh;
+  height: 100vh;
+  min-height: 0;
   display: grid;
   grid-template-columns: minmax(320px, 34%) 1fr;
   gap: 16px;
   padding: 16px;
+  overflow: hidden;
 }
 
 .panel {
+  min-height: 0;
   border: 1px solid #2a2f36;
   background: #12151a;
   border-radius: 8px;
@@ -46,6 +56,7 @@ textarea,
 
 .output {
   min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -200,6 +211,13 @@ input {
   cursor: pointer;
 }
 
+.output-header button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
 .tabs button.active {
   background: #e8eef5;
   color: #11151a;
@@ -207,6 +225,7 @@ input {
 
 .output-area {
   min-height: 0;
+  overflow: hidden;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -233,12 +252,36 @@ input {
   font-size: 12px;
 }
 
+.muted-note {
+  color: #8f9ba8;
+}
+
 .output-actions {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 8px;
   flex-wrap: wrap;
+}
+
+.segmented-control {
+  display: inline-flex;
+  gap: 0;
+  border: 1px solid #303740;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.segmented-control button {
+  border: 0;
+  border-radius: 0;
+  min-height: 32px;
+  background: #11161d;
+}
+
+.segmented-control button.active {
+  background: #e8eef5;
+  color: #11151a;
 }
 
 .code-editor-frame {
@@ -249,6 +292,12 @@ input {
   overflow: hidden;
 }
 
+.code-editor-frame > div,
+.code-editor-frame .cm-theme {
+  height: 100%;
+  min-height: 0;
+}
+
 .editor-fallback {
   height: 100%;
   border-top: 0;
@@ -256,8 +305,15 @@ input {
 
 .code-editor-frame .cm-editor {
   height: 100%;
+  min-height: 0;
   background: #080a0d !important;
   color: #e6eef7 !important;
+}
+
+.code-editor-frame .cm-scroller {
+  min-height: 0;
+  overflow: auto !important;
+  scrollbar-color: #303b45 #080a0d;
 }
 
 .code-editor-frame .cm-scroller,
@@ -303,6 +359,104 @@ input {
   text-shadow: 0 0 14px rgba(116, 215, 193, 0.24);
 }
 
+.markdown-preview {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  border-top: 1px solid #2a2f36;
+  background: #080a0d;
+  padding: 18px 22px;
+  color: #dce6ef;
+  line-height: 1.55;
+}
+
+.markdown-preview h1,
+.markdown-preview h2,
+.markdown-preview h3 {
+  margin: 18px 0 10px;
+  color: #f3f5f7;
+}
+
+.markdown-preview h1:first-child,
+.markdown-preview h2:first-child,
+.markdown-preview h3:first-child {
+  margin-top: 0;
+}
+
+.markdown-preview p,
+.markdown-preview ul,
+.markdown-preview ol {
+  max-width: 920px;
+}
+
+.markdown-preview li {
+  margin: 5px 0;
+}
+
+.markdown-preview a {
+  color: #74d7c1;
+}
+
+.markdown-preview code {
+  border: 1px solid #26323b;
+  border-radius: 5px;
+  background: #111922;
+  color: #ffcf80;
+  padding: 1px 5px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.92em;
+}
+
+.markdown-preview pre {
+  position: relative;
+  max-width: 100%;
+  overflow: auto;
+  border: 1px solid #26323b;
+  border-radius: 6px;
+  background: #0b1117;
+  padding: 42px 16px 14px;
+}
+
+.markdown-preview pre code {
+  display: block;
+  border: 0;
+  background: transparent;
+  color: #dce6ef;
+  padding: 0;
+  white-space: pre;
+}
+
+.copyable-code-block {
+  scrollbar-color: #303b45 #0b1117;
+}
+
+.code-preview-block {
+  min-height: 100%;
+  margin: 0;
+}
+
+.code-copy-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  border: 1px solid #303740;
+  border-radius: 6px;
+  background: rgba(23, 27, 33, 0.96);
+  color: #f3f5f7;
+  padding: 0 9px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.code-copy-button:hover {
+  border-color: #74d7c1;
+  color: #ffffff;
+}
+
 textarea {
   flex: 1;
   width: 100%;
@@ -319,16 +473,25 @@ textarea {
 }
 
 @media (max-width: 860px) {
+  body {
+    overflow: hidden;
+  }
+
   .shell {
+    height: 100dvh;
+    min-height: 0;
     grid-template-columns: 1fr;
+    grid-template-rows: minmax(220px, 40vh) minmax(0, 1fr);
+    overflow: hidden;
   }
 
   .controls {
     max-height: none;
+    min-height: 0;
   }
 
   .output {
-    min-height: 70vh;
+    min-height: 0;
   }
 
   .output-header {
